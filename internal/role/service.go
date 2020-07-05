@@ -12,8 +12,10 @@ type ServiceImpl struct {
 }
 
 // NewService Returns new productive service
-func NewService() Service {
-	return &ServiceImpl{}
+func NewService(d DAO) Service {
+	return &ServiceImpl{
+		dao: d,
+	}
 }
 
 // GetAll Returns all existing roles
