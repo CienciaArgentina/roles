@@ -12,3 +12,12 @@ type Claim struct {
 	ID          int    `json:"id"`
 	Description string `json:"description"`
 }
+
+// NewRole Returns new role
+func NewRole(id int, description string, claims []Claim) *Role {
+	return &Role{
+		ID:          id,
+		Description: description,
+		Claims:      claims,
+	}
+}

@@ -6,12 +6,16 @@ import (
 
 // DAO Describes role DAO interface
 type DAO interface {
+	GetAll() ([]Role, errors.ApiError)
 	Get(int) (*Role, errors.ApiError)
-	Create() // TODO: Define
-	Update() // TODO: Define
+	Create(*Role) errors.ApiError
+	Update(*Role) errors.ApiError
 }
 
 // Service Describes role service interface
 type Service interface {
-	Get(int) (*Role, errors.ApiError)
+	GetAll() ([]Role, errors.ApiError)
+	GetSingle(int) (*Role, errors.ApiError)
+	Create(string, []Claim) (*Role, errors.ApiError)
+	Update(int, string, []Claim) (*Role, errors.ApiError)
 }
