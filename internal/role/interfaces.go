@@ -1,24 +1,23 @@
 package role
 
 import (
-	errors "github.com/CienciaArgentina/go-backend-commons/pkg/apierror"
 	"github.com/gin-gonic/gin"
 )
 
 // DAO Describes role DAO interface
 type DAO interface {
-	GetAll() ([]Role, errors.ApiError)
-	Get(int) (*Role, errors.ApiError)
-	Create(*Role) errors.ApiError
-	Update(*Role) errors.ApiError
+	GetAll() ([]Role, error)
+	Get(int) (*Role, error)
+	Create(*Role) error
+	Update(*Role) error
 }
 
 // Service Describes role service interface
 type Service interface {
-	GetAll() ([]Role, errors.ApiError)
-	GetSingle(int) (*Role, errors.ApiError)
-	Create(string, []Claim) (*Role, errors.ApiError)
-	Update(int, string, []Claim) (*Role, errors.ApiError)
+	GetAll() ([]Role, error)
+	GetSingle(int) (*Role, error)
+	Create(string, []Claim) error
+	Update(int, string, []Claim) error
 }
 
 // Controller Describes role controller interface
