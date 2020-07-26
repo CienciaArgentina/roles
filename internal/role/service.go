@@ -30,7 +30,7 @@ func (s *ServiceImpl) GetSingle(id int) (*Role, error) {
 
 // Create Creates new role
 func (s *ServiceImpl) Create(description string, claims []Claim) error {
-	role := NewRole(2, description, claims)
+	role := NewRole(description, claims)
 	return s.dao.Create(role)
 }
 
@@ -49,6 +49,5 @@ func (s *ServiceImpl) Update(id int, description string, claims []Claim) error {
 		}
 	}
 
-	role := NewRole(id, description, claims)
-	return s.dao.Update(role)
+	return s.dao.Update(&Role{ID: id, Description: description, Claims: claims})
 }
