@@ -1,5 +1,3 @@
-github.com/CienciaArgentina/go-backend-commons v0.0.13 h1:bMSqOxVWVyISqQ0+L2VAkBxzKcZSjAa3hAvmZTn/mZM=
-github.com/CienciaArgentina/go-backend-commons v0.0.13/go.mod h1:8ieIeTy2dpKQ21OParhneeqEpW22w3e2xfcR5vszxdM=
 github.com/CienciaArgentina/go-backend-commons v0.0.14 h1:JG7XMfAELo+1vljy8mt8VO2yNRWlLHWw2pdGLp39ngw=
 github.com/CienciaArgentina/go-backend-commons v0.0.14/go.mod h1:PwyBanYJxUgYLYCxi95aCcDMR8p1Kcdv82q8UK2m2wk=
 github.com/CienciaArgentina/go-email-sender v0.0.0-20200303023941-5019d948d2c1/go.mod h1:lGJuqR1LLX1/2yztwzHYNUuGA14AMz38O24mrjbp06g=
@@ -12,14 +10,6 @@ github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751/go.mod h1:LOuy
 github.com/alecthomas/units v0.0.0-20151022065526-2efee857e7cf/go.mod h1:ybxpYRFXyAe+OPACYpWeL0wqObRcbAqCMya13uyzqw0=
 github.com/alecthomas/units v0.0.0-20190717042225-c3de453c63f4 h1:Hs82Z41s6SdL1CELW+XaDYmOH4hkBN4/N9og/AsOv7E=
 github.com/alecthomas/units v0.0.0-20190717042225-c3de453c63f4/go.mod h1:ybxpYRFXyAe+OPACYpWeL0wqObRcbAqCMya13uyzqw0=
-github.com/azer/crud v1.6.1 h1:cvLshToqg1QHe+FUhWmH7zHw40tjyTISRuY40xQ50H0=
-github.com/azer/crud v1.6.1/go.mod h1:XoPrWBl1DMPeWD1vBo6XxMQngVCBccicQZSfJSkbF7E=
-github.com/azer/is-terminal v1.0.0 h1:COvj8jmg2xMz0CqHn4Uu8X1m7Dmzmu0CpciBaLtJQBg=
-github.com/azer/is-terminal v1.0.0/go.mod h1:5geuIpRQvdv6g/Q1MwXHbmNUlFLg8QcheGk4dZOmxQU=
-github.com/azer/logger v1.0.0 h1:3T4BnTLyndJWHajOyECt2kAhnvP30KCrVAkYcMjHrXk=
-github.com/azer/logger v1.0.0/go.mod h1:iaDID7UeBTyUh31bjGFlLkr87k23z/mHMMLzt6YQQHU=
-github.com/azer/snakecase v1.0.0 h1:Gr9hfYVh6U96aUoGEbJK400H9KTiz6yCIYk3EN8n9hY=
-github.com/azer/snakecase v1.0.0/go.mod h1:iApMeoHF0YlMPzCwqH/d59E3w2s8SeO4rGK+iGClS8Y=
 github.com/beorn7/perks v0.0.0-20180321164747-3a771d992973/go.mod h1:Dwedo/Wpr24TaqPxmxbtue+5NUziq4I4S80YR8gNf3Q=
 github.com/beorn7/perks v1.0.0/go.mod h1:KWe93zE9D1o94FZ5RNwFwVgaQK1VOXiVxmqh+CedLV8=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
@@ -142,7 +132,6 @@ golang.org/x/sys v0.0.0-20200116001909-b77594299b42/go.mod h1:h1NjWce9XRLGQEsW7w
 golang.org/x/text v0.3.0/go.mod h1:NqM8EUOU14njkJ3fqMW+pc6Ldnwhi/IjpwHt7yyuwOQ=
 golang.org/x/text v0.3.2/go.mod h1:bEr9sfX3Q8Zfm5fL9x+3itogRgK3+ptLWKqgva+5dAk=
 golang.org/x/tools v0.0.0-20180917221912-90fa682c2a6e/go.mod h1:n7NCudcB/nEzxVGmLbDWY5pfWTLqBcC2KZ6jyYvM4mQ=
-google.golang.org/appengine v1.1.0/go.mod h1:EbEs0AVv82hx2wNQdGPgUI5lhzA/G0D9YwlJXL52JkM=
 gopkg.in/alecthomas/kingpin.v2 v2.2.6 h1:jMFz6MfLP0/4fUyZle81rXUoxOBFi19VUFKVDOQfozc=
 gopkg.in/alecthomas/kingpin.v2 v2.2.6/go.mod h1:FMv+mEhP44yOT+4EoQTLFTRgOQ1FBLkstjWtayDeSgw=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
