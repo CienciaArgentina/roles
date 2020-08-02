@@ -1,5 +1,7 @@
 github.com/CienciaArgentina/go-backend-commons v0.0.13 h1:bMSqOxVWVyISqQ0+L2VAkBxzKcZSjAa3hAvmZTn/mZM=
 github.com/CienciaArgentina/go-backend-commons v0.0.13/go.mod h1:8ieIeTy2dpKQ21OParhneeqEpW22w3e2xfcR5vszxdM=
+github.com/CienciaArgentina/go-backend-commons v0.0.14 h1:JG7XMfAELo+1vljy8mt8VO2yNRWlLHWw2pdGLp39ngw=
+github.com/CienciaArgentina/go-backend-commons v0.0.14/go.mod h1:PwyBanYJxUgYLYCxi95aCcDMR8p1Kcdv82q8UK2m2wk=
 github.com/CienciaArgentina/go-email-sender v0.0.0-20200303023941-5019d948d2c1/go.mod h1:lGJuqR1LLX1/2yztwzHYNUuGA14AMz38O24mrjbp06g=
 github.com/CienciaArgentina/go-email-sender v0.0.0-20200412073256-f7f1a1a6e55c/go.mod h1:gSQP8nSaT7B/pSxeQWozcjYm49KHlreZ1gaWgCeuuKU=
 github.com/CienciaArgentina/go-enigma v0.0.0-20200330021150-49a56be20f2a/go.mod h1:2IWPKW0EXXARcn85b0DEeQ2S4Mu5IlIkM/puqyx5ef8=
@@ -25,6 +27,7 @@ github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/dgrijalva/jwt-go v3.2.0+incompatible/go.mod h1:E3ru+11k8xSBh+hMPgOLZmtrrCbhqsmaPHjLKYnJCaQ=
 github.com/gin-contrib/cors v1.3.1/go.mod h1:jjEJ4268OPZUcU7k9Pm653S7lXUGcqMADzFA61xsmDk=
+github.com/gin-contrib/pprof v1.3.0/go.mod h1:waMjT1H9b179t3CxuG1cV3DHpga6ybizwfBaM5OXaB0=
 github.com/gin-contrib/sse v0.1.0 h1:Y/yl/+YNO8GZSjAhjMsSuLt29uWRFHdHYUb5lYOV9qE=
 github.com/gin-contrib/sse v0.1.0/go.mod h1:RHrZQHXnP2xjPF+u1gW/2HnVO7nvIa9PG3Gm+fLHvGI=
 github.com/gin-gonic/gin v1.5.0/go.mod h1:Nd6IXA8m5kNZdNEHMBd93KT+mdY3+bewLgRvmCsR2Do=

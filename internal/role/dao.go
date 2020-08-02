@@ -2,12 +2,9 @@ package role
 
 import (
 	"database/sql"
-	"errors"
 	"fmt"
 
 	"github.com/CienciaArgentina/go-backend-commons/pkg/apierror"
-	"github.com/azer/crud"
-	_ "github.com/go-sql-driver/mysql"
 	"github.com/prometheus/common/log"
 )
 
@@ -17,25 +14,78 @@ const (
 
 // DAOImpl Productive role DAO implementation
 type DAOImpl struct {
-	db *crud.DB
+	db *sql.DB
 }
 
 // NewDAO Returns new productive role DAO implementation
-func NewDAO(db *crud.DB) DAO {
+func NewDAO(db *sql.DB) DAO {
 	return &DAOImpl{
 		db: db,
 	}
 }
 
 // GetAll Returns all active roles
-func (d *DAOImpl) GetAll() ([]Role, error) {
-	roles := []Role{}
+func (d *DAOImpl) GetAll(id int) ([]Role, error) {
+	query := `
+	SELECT 
+		r.id AS role_id,
+		r.description AS role_description,
+		c.id AS claim_id,
+		c.description AS claim_description
+	FROM roles_x_claims rxc
+		INNER JOIN roles r ON r.id = rxc.role_id
+		INNER JOIN claims c ON c.id = rxc.claim_id
+	`
+	if id != -1 {
+		query += fmt.Sprintf("WHERE r.id = %d", id)
+	}
 
-	err := d.db.Read(roles, "SELECT * FROM roles")
+	rows, err := d.db.Query(query)
 	if err != nil {
-		msg := fmt.Sprintf("%s Error retrieving all roles from DB - %+v", daoLogKey, err)
-		log.Errorf(msg)
+		msg := "Error retrieving all roles from DB"
+		log.Errorf("%s %s", err, daoLogKey, msg)
 		return nil, apierror.NewInternalServerApiError(msg, err)
+	}
+	defer rows.Close()
+
+	roleMap := map[int]Role{}
+	for rows.Next() {
+		var roleID int
+		var claimID int
+		var claimDescription string
+		var roleDescription string
+
+		err := rows.Scan(&roleID, &roleDescription, &claimID, &claimDescription)
+		if err != nil {
+			msg := "Error unmarshalling role"
+			log.Errorf("%s %s", err, daoLogKey, msg)
+			return nil, apierror.NewInternalServerApiError(msg, err)
+		}
+
+		role, exist := roleMap[roleID]
+		if !exist {
+			roleMap[roleID] = Role{
+				ID:          roleID,
+				Description: roleDescription,
+				Claims: []Claim{
+					{
+						ID:          claimID,
+						Description: claimDescription,
+					},
+				},
+			}
+			continue
+		}
+
+		role.Claims = append(role.Claims, Claim{
+			ID:          claimID,
+			Description: claimDescription,
+		})
+	}
+
+	roles := []Role{}
+	for _, role := range roleMap {
+		roles = append(roles, role)
 	}
 
 	return roles, nil
@@ -43,46 +93,14 @@ func (d *DAOImpl) GetAll() ([]Role, error) {
 
 // Get Returns role with given id
 func (d *DAOImpl) Get(id int) (*Role, error) {
-	role := &Role{}
-
-	err := d.db.Read(role, "SELECT * FROM roles WHERE id = ?", id)
-	if errors.Is(err, sql.ErrNoRows) {
-		msg := fmt.Sprintf("%s Couldn't find role with ID (%d)", daoLogKey, id)
+	roles, err := d.GetAll(id)
+	if err != nil {
+		return nil, err
+	}
+	if len(roles) == 0 {
+		msg := fmt.Sprintf("Role (%d) not found", id)
 		return nil, apierror.NewNotFoundApiError(msg)
 	}
-	if err != nil {
-		msg := fmt.Sprintf("%s Error retrieving role with ID (%d) from DB - %+v", daoLogKey, id, err)
-		log.Errorf(msg)
-		return nil, apierror.NewInternalServerApiError(msg, err)
-	}
 
-	return role, nil
-}
-
-// Create Creates a new role
-func (d *DAOImpl) Create(role *Role) error {
-	err := d.db.Create(role)
-	if err != nil {
-		msg := fmt.Sprintf("%s Error creating role - %+v", daoLogKey, err)
-		log.Errorf(msg)
-		return apierror.NewInternalServerApiError(msg, err)
-	}
-
-	return nil
-}
-
-// Update Updates existing role
-func (d *DAOImpl) Update(role *Role) error {
-	err := d.db.Update(role)
-	if errors.Is(err, sql.ErrNoRows) {
-		msg := fmt.Sprintf("%s Couldn't find role with ID (%d)", daoLogKey, role.ID)
-		return apierror.NewNotFoundApiError(msg)
-	}
-	if err != nil {
-		msg := fmt.Sprintf("%s Error updating role - %+v", daoLogKey, err)
-		log.Errorf(msg)
-		return apierror.NewInternalServerApiError(msg, err)
-	}
-
-	return nil
+	return &roles[0], nil
 }

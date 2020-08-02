@@ -54,25 +54,3 @@ func (ctr *ControllerImpl) Get(c *gin.Context) error {
 	c.Set(bodyKey, role)
 	return nil
 }
-
-// Create Creates new role
-func (ctr *ControllerImpl) Create(c *gin.Context) error {
-	var body Role
-	if err := c.BindJSON(&body); err != nil {
-		return apierror.NewBadRequestApiError("Couldn't parse body")
-	}
-
-	err := ctr.service.Create(body.Description, body.Claims)
-	if err != nil {
-		return err
-	}
-
-	c.Set(bodyKey, map[string]string{"STATUS": "CREATED"})
-	return nil
-}
-
-// Update Updates existing role
-func (ctr *ControllerImpl) Update(c *gin.Context) error {
-	// TODO: Implement
-	return nil
-}
