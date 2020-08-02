@@ -6,6 +6,7 @@ import (
 
 	"github.com/CienciaArgentina/go-backend-commons/pkg/apierror"
 	"github.com/CienciaArgentina/go-backend-commons/pkg/middleware"
+	"github.com/CienciaArgentina/roles/internal/adapter"
 	"github.com/gin-gonic/gin"
 )
 
@@ -33,7 +34,7 @@ func (ctr *ControllerImpl) GetAll(c *gin.Context) error {
 		return err
 	}
 
-	c.Set(bodyKey, roles)
+	c.Set(bodyKey, adapter.Adapt(roles))
 	return nil
 }
 
@@ -51,6 +52,34 @@ func (ctr *ControllerImpl) Get(c *gin.Context) error {
 		return err
 	}
 
-	c.Set(bodyKey, role)
+	c.Set(bodyKey, adapter.Adapt(role))
+	return nil
+}
+
+// GetAssignedRole Returns assigned role for auth_id in path
+func (ctr *ControllerImpl) GetAssignedRole(c *gin.Context) error {
+	id := c.Param("auth_id")
+
+	role, err := ctr.service.GetAssignedRole(id)
+	if err != nil {
+		return err
+	}
+
+	c.Set(bodyKey, adapter.Adapt(role))
+	return nil
+}
+
+// AssignRole ...
+func (ctr *ControllerImpl) AssignRole(c *gin.Context) error {
+	return nil
+}
+
+// UpdateAssignedRole ...
+func (ctr *ControllerImpl) UpdateAssignedRole(c *gin.Context) error {
+	return nil
+}
+
+// DeleteAssignedRole ...
+func (ctr *ControllerImpl) DeleteAssignedRole(c *gin.Context) error {
 	return nil
 }
