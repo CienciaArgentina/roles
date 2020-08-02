@@ -1,9 +1,9 @@
 package app
 
 import (
+	"github.com/CienciaArgentina/go-backend-commons/pkg/middleware"
 	"github.com/CienciaArgentina/roles/internal/role"
 	"github.com/gin-gonic/gin"
-	"github.com/prometheus/common/log"
 )
 
 // App App definition
@@ -26,16 +26,9 @@ func New(
 // Start Initializes app
 func (a *App) Start() {
 	a.Router = gin.Default()
+	a.Router.Use(middleware.ResponseMiddleware)
+	a.Router.Use(middleware.ErrorMiddleware)
+
 	a.MapURLs()
-
-	// a.Router.Use(middleware.ResponseMiddleware)
-	// a.Router.Use(middleware.ErrorMiddleware)
-	a.Router.Use(middle)
-
 	a.Router.Run()
-}
-
-func middle(c *gin.Context) {
-	log.Info("asjdasodujoiasdi")
-	panic("ashusausaduasduiuiasduiasduhisd")
 }

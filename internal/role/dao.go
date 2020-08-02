@@ -48,7 +48,7 @@ func (d *DAOImpl) GetAll(id int) ([]Role, error) {
 	}
 	defer rows.Close()
 
-	roleMap := map[int]Role{}
+	roleMap := map[int]*Role{}
 	for rows.Next() {
 		var roleID int
 		var claimID int
@@ -64,7 +64,7 @@ func (d *DAOImpl) GetAll(id int) ([]Role, error) {
 
 		role, exist := roleMap[roleID]
 		if !exist {
-			roleMap[roleID] = Role{
+			roleMap[roleID] = &Role{
 				ID:          roleID,
 				Description: roleDescription,
 				Claims: []Claim{
@@ -85,7 +85,7 @@ func (d *DAOImpl) GetAll(id int) ([]Role, error) {
 
 	roles := []Role{}
 	for _, role := range roleMap {
-		roles = append(roles, role)
+		roles = append(roles, *role)
 	}
 
 	return roles, nil
