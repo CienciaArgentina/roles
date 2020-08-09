@@ -26,3 +26,9 @@ func NewRole(description string, claims []Claim) *Role {
 		Claims:      claims,
 	}
 }
+
+// AssignRoleRequest Request of role assignment
+type AssignRoleRequest struct {
+	AuthID string `json:"auth_id"`
+	RoleID int    `json:"role_id"`
+}

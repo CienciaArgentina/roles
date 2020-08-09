@@ -15,12 +15,7 @@ func (a *App) MapURLs() {
 	assign := a.Router.Group("/assign")
 	{
 		assign.GET("/:auth_id", middleware.AdaptController(a.RoleController.GetAssignedRole))
-		// TODO: Implement
-		assign.POST("")
-		// TODO: Implement
-		assign.PUT("")
-		// TODO: Implement
-		assign.DELETE("/:auth_id")
-		// TODO: Implement
+		assign.POST("", middleware.AdaptController(a.RoleController.AssignRole))
+		assign.DELETE("/:auth_id", middleware.AdaptController(a.RoleController.DeleteAssignedRole))
 	}
 }

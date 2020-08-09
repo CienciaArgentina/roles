@@ -207,17 +207,35 @@ func (d *DAOImpl) GetAssignedRole(id string) (*AssignedRole, error) {
 	return &assignedRoles[0], nil
 }
 
-// AssignRole Assigns role to auth ID
-func (d *DAOImpl) AssignRole(authID string, roleID int) error {
-	return nil
-}
+// UpsertAssignedRole Inserts new element if record doesn't exist, updates otherwise
+func (d *DAOImpl) UpsertAssignedRole(authID string, roleID int) error {
+	statement := fmt.Sprintf(`
+	INSERT IGNORE INTO assigned_roles (auth_id, role_id) VALUES ('%s', %d)
+	`, authID, roleID)
 
-// UpdateAssignedRole Updated assigned role from auth ID
-func (d *DAOImpl) UpdateAssignedRole(authID string, roleID int) error {
+	_, err := d.db.Exec(statement)
+	if err != nil {
+		msg := fmt.Sprintf("Error assigning role (%d) to auth ID (%s)", roleID, authID)
+		log.Errorf("%s %s", err, daoLogKey, msg)
+		return apierror.NewInternalServerApiError(msg, err)
+	}
+
 	return nil
 }
 
 // DeleteAssignedRole Deletes assigned role from auth ID
-func (d *DAOImpl) DeleteAssignedRole(authID string, roleID int) error {
+func (d *DAOImpl) DeleteAssignedRole(authID string) error {
+	statement := fmt.Sprintf(`
+		DELETE FROM assigned_roles 
+		WHERE auth_id = '%s'
+	`, authID)
+
+	_, err := d.db.Exec(statement)
+	if err != nil {
+		msg := fmt.Sprintf("Error deleting auth ID (%s)", authID)
+		log.Errorf("%s %s", err, daoLogKey, msg)
+		return apierror.NewInternalServerApiError(msg, err)
+	}
+
 	return nil
 }

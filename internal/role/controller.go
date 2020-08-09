@@ -69,17 +69,38 @@ func (ctr *ControllerImpl) GetAssignedRole(c *gin.Context) error {
 	return nil
 }
 
-// AssignRole ...
+// AssignRole Assigns role to given auth ID
 func (ctr *ControllerImpl) AssignRole(c *gin.Context) error {
+	var body AssignRoleRequest
+	if err := c.BindJSON(&body); err != nil {
+		return apierror.NewBadRequestApiError("Error reading body")
+	}
+	if body.AuthID == "" || body.RoleID < 0 {
+		return apierror.NewBadRequestApiError("Invalid auth ID or role ID")
+	}
+
+	err := ctr.service.AssignRole(body.AuthID, body.RoleID)
+	if err != nil {
+		return err
+	}
+
+	c.Set(bodyKey, map[string]string{
+		"status": "CREATED",
+	})
 	return nil
 }
 
-// UpdateAssignedRole ...
-func (ctr *ControllerImpl) UpdateAssignedRole(c *gin.Context) error {
-	return nil
-}
-
-// DeleteAssignedRole ...
+// DeleteAssignedRole Deletes all assigned roles for given auth ID
 func (ctr *ControllerImpl) DeleteAssignedRole(c *gin.Context) error {
+	id := c.Param("auth_id")
+
+	err := ctr.service.DeleteAssignedRole(id)
+	if err != nil {
+		return err
+	}
+
+	c.Set(bodyKey, map[string]string{
+		"status": "DELETED",
+	})
 	return nil
 }
