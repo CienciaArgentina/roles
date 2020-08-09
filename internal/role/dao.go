@@ -35,7 +35,7 @@ func (d *DAOImpl) getRolesFromRows(rows *sql.Rows) ([]Role, error) {
 		err := rows.Scan(&roleID, &roleDescription, &claimID, &claimDescription)
 		if err != nil {
 			msg := "Error unmarshalling role"
-			log.Errorf("%s %s", err, daoLogKey, msg)
+			log.Errorf("%s %s - %+v", daoLogKey, msg, err)
 			return nil, apierror.NewInternalServerApiError(msg, err)
 		}
 
@@ -85,7 +85,7 @@ func (d *DAOImpl) GetAll() ([]Role, error) {
 	rows, err := d.db.Query(query)
 	if err != nil {
 		msg := "Error retrieving roles from DB"
-		log.Errorf("%s %s", err, daoLogKey, msg)
+		log.Errorf("%s %s - %+v", daoLogKey, msg, err)
 		return nil, apierror.NewInternalServerApiError(msg, err)
 	}
 	defer rows.Close()
@@ -112,7 +112,7 @@ func (d *DAOImpl) Get(id int) (*Role, error) {
 	rows, err := d.db.Query(query)
 	if err != nil {
 		msg := "Error retrieving role from DB"
-		log.Errorf("%s %s", err, daoLogKey, msg)
+		log.Errorf("%s %s - %+v", daoLogKey, msg, err)
 		return nil, apierror.NewInternalServerApiError(msg, err)
 	}
 	defer rows.Close()
@@ -151,7 +151,7 @@ func (d *DAOImpl) GetAssignedRole(id string) (*AssignedRole, error) {
 	rows, err := d.db.Query(query)
 	if err != nil {
 		msg := fmt.Sprintf("Error retrieving assigned role from DB for auth_id (%s)", id)
-		log.Errorf("%s %s", err, daoLogKey, msg)
+		log.Errorf("%s %s - %+v", daoLogKey, msg, err)
 		return nil, apierror.NewInternalServerApiError(msg, err)
 	}
 	defer rows.Close()
@@ -167,7 +167,7 @@ func (d *DAOImpl) GetAssignedRole(id string) (*AssignedRole, error) {
 		err := rows.Scan(&authID, &roleID, &roleDescription, &claimID, &claimDescription)
 		if err != nil {
 			msg := "Error unmarshalling role"
-			log.Errorf("%s %s", err, daoLogKey, msg)
+			log.Errorf("%s %s - %+v", daoLogKey, msg, err)
 			return nil, apierror.NewInternalServerApiError(msg, err)
 		}
 
@@ -216,7 +216,7 @@ func (d *DAOImpl) UpsertAssignedRole(authID string, roleID int) error {
 	_, err := d.db.Exec(statement)
 	if err != nil {
 		msg := fmt.Sprintf("Error assigning role (%d) to auth ID (%s)", roleID, authID)
-		log.Errorf("%s %s", err, daoLogKey, msg)
+		log.Errorf("%s %s - %+v", daoLogKey, msg, err)
 		return apierror.NewInternalServerApiError(msg, err)
 	}
 
@@ -233,7 +233,7 @@ func (d *DAOImpl) DeleteAssignedRole(authID string) error {
 	_, err := d.db.Exec(statement)
 	if err != nil {
 		msg := fmt.Sprintf("Error deleting auth ID (%s)", authID)
-		log.Errorf("%s %s", err, daoLogKey, msg)
+		log.Errorf("%s %s - %+v", daoLogKey, msg, err)
 		return apierror.NewInternalServerApiError(msg, err)
 	}
 
