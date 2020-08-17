@@ -210,7 +210,7 @@ func (d *DAOImpl) GetAssignedRole(id string) (*AssignedRole, error) {
 // UpsertAssignedRole Inserts new element if record doesn't exist, updates otherwise
 func (d *DAOImpl) UpsertAssignedRole(authID string, roleID int) error {
 	statement := fmt.Sprintf(`
-	INSERT IGNORE INTO assigned_roles (auth_id, role_id) VALUES ('%s', %d)
+	INSERT INTO assigned_roles (auth_id, role_id) VALUES ('%s', %d)
 	`, authID, roleID)
 
 	_, err := d.db.Exec(statement)

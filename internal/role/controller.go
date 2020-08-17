@@ -59,6 +59,9 @@ func (ctr *ControllerImpl) Get(c *gin.Context) error {
 // GetAssignedRole Returns assigned role for auth_id in path
 func (ctr *ControllerImpl) GetAssignedRole(c *gin.Context) error {
 	id := c.Param("auth_id")
+	if id == "" {
+		return apierror.NewBadRequestApiError("Empty auth ID")
+	}
 
 	role, err := ctr.service.GetAssignedRole(id)
 	if err != nil {
