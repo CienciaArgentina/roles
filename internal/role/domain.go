@@ -1,5 +1,11 @@
 package role
 
+// AssignedRole Role assigned to auth ID
+type AssignedRole struct {
+	AuthID string `json:"auth_id"`
+	Role   Role   `json:"role"`
+}
+
 // Role Structure of a role to be assumed by a user
 type Role struct {
 	ID          int     `json:"id"`
@@ -11,4 +17,18 @@ type Role struct {
 type Claim struct {
 	ID          int    `json:"id"`
 	Description string `json:"description"`
+}
+
+// NewRole Returns new role
+func NewRole(description string, claims []Claim) *Role {
+	return &Role{
+		Description: description,
+		Claims:      claims,
+	}
+}
+
+// AssignRoleRequest Request of role assignment
+type AssignRoleRequest struct {
+	AuthID string `json:"auth_id"`
+	RoleID int    `json:"role_id"`
 }
