@@ -3,6 +3,7 @@ package app
 import (
 	"github.com/CienciaArgentina/go-backend-commons/pkg/middleware"
 	"github.com/CienciaArgentina/roles/internal/role"
+	"github.com/gin-contrib/gzip"
 	"github.com/gin-gonic/gin"
 )
 
@@ -26,6 +27,7 @@ func New(
 // Start Initializes app
 func (a *App) Start() {
 	a.Router = gin.Default()
+	a.Router.Use(gzip.Gzip(gzip.DefaultCompression))
 	a.Router.Use(middleware.ResponseMiddleware)
 	a.Router.Use(middleware.ErrorMiddleware)
 

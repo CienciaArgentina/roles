@@ -3,7 +3,7 @@ package role
 // AssignedRole Role assigned to auth ID
 type AssignedRole struct {
 	AuthID string `json:"auth_id"`
-	Role   Role   `json:"role"`
+	Roles  []Role `json:"roles"`
 }
 
 // Role Structure of a role to be assumed by a user

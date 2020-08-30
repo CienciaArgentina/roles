@@ -10,6 +10,14 @@ import (
 
 const (
 	daoLogKey = "[ROLES][DAO]"
+
+	codeRoleUnmarshalError         = "role_unmarshal"
+	codeRoleAllQuery               = "role_all_query"
+	codeRoleQuery                  = "role_query"
+	codeAssignedRoleQuery          = "assigned_role_query"
+	codeAssignedRoleUnmarshalError = "assigned_role_unmarshal"
+	codeUpsertExec                 = "upsert_exec"
+	codeDeleteExec                 = "delete_exec"
 )
 
 // DAOImpl Productive role DAO implementation
@@ -36,7 +44,7 @@ func (d *DAOImpl) getRolesFromRows(rows *sql.Rows) ([]Role, error) {
 		if err != nil {
 			msg := "Error unmarshalling role"
 			log.Errorf("%s %s - %+v", daoLogKey, msg, err)
-			return nil, apierror.NewInternalServerApiError(msg, err)
+			return nil, apierror.NewInternalServerApiError(msg, err, codeRoleUnmarshalError)
 		}
 
 		role, exist := roleMap[roleID]
@@ -86,7 +94,7 @@ func (d *DAOImpl) GetAll() ([]Role, error) {
 	if err != nil {
 		msg := "Error retrieving roles from DB"
 		log.Errorf("%s %s - %+v", daoLogKey, msg, err)
-		return nil, apierror.NewInternalServerApiError(msg, err)
+		return nil, apierror.NewInternalServerApiError(msg, err, "role_all_query")
 	}
 	defer rows.Close()
 
@@ -113,7 +121,7 @@ func (d *DAOImpl) Get(id int) (*Role, error) {
 	if err != nil {
 		msg := "Error retrieving role from DB"
 		log.Errorf("%s %s - %+v", daoLogKey, msg, err)
-		return nil, apierror.NewInternalServerApiError(msg, err)
+		return nil, apierror.NewInternalServerApiError(msg, err, codeRoleQuery)
 	}
 	defer rows.Close()
 
@@ -152,11 +160,11 @@ func (d *DAOImpl) GetAssignedRole(id string) (*AssignedRole, error) {
 	if err != nil {
 		msg := fmt.Sprintf("Error retrieving assigned role from DB for auth_id (%s)", id)
 		log.Errorf("%s %s - %+v", daoLogKey, msg, err)
-		return nil, apierror.NewInternalServerApiError(msg, err)
+		return nil, apierror.NewInternalServerApiError(msg, err, codeAssignedRoleQuery)
 	}
 	defer rows.Close()
 
-	roleMap := map[string]*Role{}
+	roleMap := map[int]*Role{}
 	for rows.Next() {
 		var authID string
 		var roleID int
@@ -168,12 +176,12 @@ func (d *DAOImpl) GetAssignedRole(id string) (*AssignedRole, error) {
 		if err != nil {
 			msg := "Error unmarshalling role"
 			log.Errorf("%s %s - %+v", daoLogKey, msg, err)
-			return nil, apierror.NewInternalServerApiError(msg, err)
+			return nil, apierror.NewInternalServerApiError(msg, err, codeAssignedRoleUnmarshalError)
 		}
 
-		role, exist := roleMap[authID]
+		role, exist := roleMap[roleID]
 		if !exist {
-			roleMap[authID] = &Role{
+			roleMap[roleID] = &Role{
 				ID:          roleID,
 				Description: roleDescription,
 				Claims: []Claim{
@@ -192,19 +200,19 @@ func (d *DAOImpl) GetAssignedRole(id string) (*AssignedRole, error) {
 		})
 	}
 
-	assignedRoles := []AssignedRole{}
-	for authID, role := range roleMap {
-		assignedRoles = append(assignedRoles, AssignedRole{
-			AuthID: authID,
-			Role:   *role,
-		})
+	roles := []Role{}
+	for _, role := range roleMap {
+		roles = append(roles, *role)
 	}
-	if len(assignedRoles) == 0 {
+	if len(roleMap) == 0 {
 		msg := fmt.Sprintf("Assigned Role for ID (%s) not found", id)
 		return nil, apierror.NewNotFoundApiError(msg)
 	}
 
-	return &assignedRoles[0], nil
+	return &AssignedRole{
+		AuthID: id,
+		Roles:  roles,
+	}, nil
 }
 
 // UpsertAssignedRole Inserts new element if record doesn't exist, updates otherwise
@@ -217,7 +225,7 @@ func (d *DAOImpl) UpsertAssignedRole(authID string, roleID int) error {
 	if err != nil {
 		msg := fmt.Sprintf("Error assigning role (%d) to auth ID (%s)", roleID, authID)
 		log.Errorf("%s %s - %+v", daoLogKey, msg, err)
-		return apierror.NewInternalServerApiError(msg, err)
+		return apierror.NewInternalServerApiError(msg, err, codeUpsertExec)
 	}
 
 	return nil
@@ -234,7 +242,7 @@ func (d *DAOImpl) DeleteAssignedRole(authID string) error {
 	if err != nil {
 		msg := fmt.Sprintf("Error deleting auth ID (%s)", authID)
 		log.Errorf("%s %s - %+v", daoLogKey, msg, err)
-		return apierror.NewInternalServerApiError(msg, err)
+		return apierror.NewInternalServerApiError(msg, err, codeDeleteExec)
 	}
 
 	return nil
