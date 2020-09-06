@@ -2,7 +2,7 @@ package role
 
 // AssignedRole Role assigned to auth ID
 type AssignedRole struct {
-	AuthID string `json:"auth_id"`
+	AuthID int64 `json:"auth_id"`
 	Roles  []Role `json:"roles"`
 }
 
@@ -29,6 +29,6 @@ func NewRole(description string, claims []Claim) *Role {
 
 // AssignRoleRequest Request of role assignment
 type AssignRoleRequest struct {
-	AuthID string `json:"auth_id"`
+	AuthID int64 `json:"auth_id"`
 	RoleID int    `json:"role_id"`
 }
