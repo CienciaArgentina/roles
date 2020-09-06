@@ -153,12 +153,12 @@ func (d *DAOImpl) GetAssignedRole(id int64) (*AssignedRole, error) {
 		INNER JOIN roles r ON r.id = rxc.role_id
 		INNER JOIN claims c ON c.id = rxc.claim_id
 
-	WHERE auth_id = '%s';
+	WHERE auth_id = '%d';
 	`, id)
 
 	rows, err := d.db.Query(query)
 	if err != nil {
-		msg := fmt.Sprintf("Error retrieving assigned role from DB for auth_id (%s)", id)
+		msg := fmt.Sprintf("Error retrieving assigned role from DB for auth_id (%d)", id)
 		logrus.Errorf("%s %s - %+v", daoLogKey, msg, err)
 		return nil, apierror.NewInternalServerApiError(msg, err, codeAssignedRoleQuery)
 	}
@@ -166,7 +166,7 @@ func (d *DAOImpl) GetAssignedRole(id int64) (*AssignedRole, error) {
 
 	roleMap := map[int]*Role{}
 	for rows.Next() {
-		var authID string
+		var authID int64
 		var roleID int
 		var claimID int
 		var claimDescription string
@@ -240,7 +240,7 @@ func (d *DAOImpl) DeleteAssignedRole(authID int64) error {
 
 	_, err := d.db.Exec(statement)
 	if err != nil {
-		msg := fmt.Sprintf("Error deleting auth ID (%s)", authID)
+		msg := fmt.Sprintf("Error deleting auth ID (%d)", authID)
 		logrus.Errorf("%s %s - %+v", daoLogKey, msg, err)
 		return apierror.NewInternalServerApiError(msg, err, codeDeleteExec)
 	}
