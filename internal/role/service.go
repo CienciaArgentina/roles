@@ -23,16 +23,16 @@ func (s *ServiceImpl) GetSingle(id int) (*Role, error) {
 }
 
 // GetAssignedRole Returns assigned roles for given authID
-func (s *ServiceImpl) GetAssignedRole(id string) (*AssignedRole, error) {
+func (s *ServiceImpl) GetAssignedRole(id int64) (*AssignedRole, error) {
 	return s.dao.GetAssignedRole(id)
 }
 
 // AssignRole Assigned new role to given auth ID
-func (s *ServiceImpl) AssignRole(authID string, roleID int) error {
+func (s *ServiceImpl) AssignRole(authID int64, roleID int) error {
 	return s.dao.UpsertAssignedRole(authID, roleID)
 }
 
 // DeleteAssignedRole Deletes auth ID role assignment
-func (s *ServiceImpl) DeleteAssignedRole(authID string) error {
+func (s *ServiceImpl) DeleteAssignedRole(authID int64) error {
 	return s.dao.DeleteAssignedRole(authID)
 }

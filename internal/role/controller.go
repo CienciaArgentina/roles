@@ -62,8 +62,11 @@ func (ctr *ControllerImpl) GetAssignedRole(c *gin.Context) error {
 	if id == "" {
 		return apierror.NewBadRequestApiError("Empty auth ID")
 	}
-
-	role, err := ctr.service.GetAssignedRole(id)
+	usrid, err := strconv.Atoi(id)
+	if err != nil {
+		return apierror.NewBadRequestApiError(err.Error())
+	}
+	role, err := ctr.service.GetAssignedRole(int64(usrid))
 	if err != nil {
 		return err
 	}
@@ -78,7 +81,7 @@ func (ctr *ControllerImpl) AssignRole(c *gin.Context) error {
 	if err := c.BindJSON(&body); err != nil {
 		return apierror.NewBadRequestApiError("Error reading body")
 	}
-	if body.AuthID == "" || body.RoleID <= 0 {
+	if body.AuthID == 0 || body.RoleID <= 0 {
 		return apierror.NewBadRequestApiError("Invalid auth ID or role ID")
 	}
 
@@ -100,7 +103,11 @@ func (ctr *ControllerImpl) DeleteAssignedRole(c *gin.Context) error {
 		return apierror.NewBadRequestApiError("Empty auth ID")
 	}
 
-	err := ctr.service.DeleteAssignedRole(id)
+	usrid, err := strconv.Atoi(id)
+	if err != nil {
+		return apierror.NewBadRequestApiError(err.Error())
+	}
+	err = ctr.service.DeleteAssignedRole(int64(usrid))
 	if err != nil {
 		return err
 	}

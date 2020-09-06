@@ -3,9 +3,9 @@ package role
 import (
 	"database/sql"
 	"fmt"
+	"github.com/sirupsen/logrus"
 
 	"github.com/CienciaArgentina/go-backend-commons/pkg/apierror"
-	"github.com/prometheus/common/log"
 )
 
 const (
@@ -43,7 +43,7 @@ func (d *DAOImpl) getRolesFromRows(rows *sql.Rows) ([]Role, error) {
 		err := rows.Scan(&roleID, &roleDescription, &claimID, &claimDescription)
 		if err != nil {
 			msg := "Error unmarshalling role"
-			log.Errorf("%s %s - %+v", daoLogKey, msg, err)
+			logrus.Errorf("%s %s - %+v", daoLogKey, msg, err)
 			return nil, apierror.NewInternalServerApiError(msg, err, codeRoleUnmarshalError)
 		}
 
@@ -93,7 +93,7 @@ func (d *DAOImpl) GetAll() ([]Role, error) {
 	rows, err := d.db.Query(query)
 	if err != nil {
 		msg := "Error retrieving roles from DB"
-		log.Errorf("%s %s - %+v", daoLogKey, msg, err)
+		logrus.Errorf("%s %s - %+v", daoLogKey, msg, err)
 		return nil, apierror.NewInternalServerApiError(msg, err, "role_all_query")
 	}
 	defer rows.Close()
@@ -120,7 +120,7 @@ func (d *DAOImpl) Get(id int) (*Role, error) {
 	rows, err := d.db.Query(query)
 	if err != nil {
 		msg := "Error retrieving role from DB"
-		log.Errorf("%s %s - %+v", daoLogKey, msg, err)
+		logrus.Errorf("%s %s - %+v", daoLogKey, msg, err)
 		return nil, apierror.NewInternalServerApiError(msg, err, codeRoleQuery)
 	}
 	defer rows.Close()
@@ -139,7 +139,7 @@ func (d *DAOImpl) Get(id int) (*Role, error) {
 }
 
 // GetAssignedRole Returns assigned role for given auth ID
-func (d *DAOImpl) GetAssignedRole(id string) (*AssignedRole, error) {
+func (d *DAOImpl) GetAssignedRole(id int64) (*AssignedRole, error) {
 	query := fmt.Sprintf(`
 	SELECT 
 		assigned.auth_id AS auth_id,
@@ -159,7 +159,7 @@ func (d *DAOImpl) GetAssignedRole(id string) (*AssignedRole, error) {
 	rows, err := d.db.Query(query)
 	if err != nil {
 		msg := fmt.Sprintf("Error retrieving assigned role from DB for auth_id (%s)", id)
-		log.Errorf("%s %s - %+v", daoLogKey, msg, err)
+		logrus.Errorf("%s %s - %+v", daoLogKey, msg, err)
 		return nil, apierror.NewInternalServerApiError(msg, err, codeAssignedRoleQuery)
 	}
 	defer rows.Close()
@@ -175,7 +175,7 @@ func (d *DAOImpl) GetAssignedRole(id string) (*AssignedRole, error) {
 		err := rows.Scan(&authID, &roleID, &roleDescription, &claimID, &claimDescription)
 		if err != nil {
 			msg := "Error unmarshalling role"
-			log.Errorf("%s %s - %+v", daoLogKey, msg, err)
+			logrus.Errorf("%s %s - %+v", daoLogKey, msg, err)
 			return nil, apierror.NewInternalServerApiError(msg, err, codeAssignedRoleUnmarshalError)
 		}
 
@@ -216,15 +216,15 @@ func (d *DAOImpl) GetAssignedRole(id string) (*AssignedRole, error) {
 }
 
 // UpsertAssignedRole Inserts new element if record doesn't exist, updates otherwise
-func (d *DAOImpl) UpsertAssignedRole(authID string, roleID int) error {
+func (d *DAOImpl) UpsertAssignedRole(authID int64, roleID int) error {
 	statement := fmt.Sprintf(`
-	INSERT INTO assigned_roles (auth_id, role_id) VALUES ('%s', %d)
+	INSERT INTO assigned_roles (auth_id, role_id) VALUES ('%d', %d)
 	`, authID, roleID)
 
 	_, err := d.db.Exec(statement)
 	if err != nil {
 		msg := fmt.Sprintf("Error assigning role (%d) to auth ID (%s)", roleID, authID)
-		log.Errorf("%s %s - %+v", daoLogKey, msg, err)
+		logrus.Errorf("%s %s - %+v", daoLogKey, msg, err)
 		return apierror.NewInternalServerApiError(msg, err, codeUpsertExec)
 	}
 
@@ -232,16 +232,16 @@ func (d *DAOImpl) UpsertAssignedRole(authID string, roleID int) error {
 }
 
 // DeleteAssignedRole Deletes assigned role from auth ID
-func (d *DAOImpl) DeleteAssignedRole(authID string) error {
+func (d *DAOImpl) DeleteAssignedRole(authID int64) error {
 	statement := fmt.Sprintf(`
 		DELETE FROM assigned_roles 
-		WHERE auth_id = '%s'
+		WHERE auth_id = '%d'
 	`, authID)
 
 	_, err := d.db.Exec(statement)
 	if err != nil {
 		msg := fmt.Sprintf("Error deleting auth ID (%s)", authID)
-		log.Errorf("%s %s - %+v", daoLogKey, msg, err)
+		logrus.Errorf("%s %s - %+v", daoLogKey, msg, err)
 		return apierror.NewInternalServerApiError(msg, err, codeDeleteExec)
 	}
 
