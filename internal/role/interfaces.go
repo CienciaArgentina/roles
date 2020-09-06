@@ -8,18 +8,18 @@ import (
 type DAO interface {
 	GetAll() ([]Role, error)
 	Get(id int) (*Role, error)
-	GetAssignedRole(id string) (*AssignedRole, error)
-	UpsertAssignedRole(authID string, roleID int) error
-	DeleteAssignedRole(authID string) error
+	GetAssignedRole(id int64) (*AssignedRole, error)
+	UpsertAssignedRole(authID int64, roleID int) error
+	DeleteAssignedRole(authID int64) error
 }
 
 // Service Describes role service interface
 type Service interface {
 	GetAll() ([]Role, error)
 	GetSingle(id int) (*Role, error)
-	GetAssignedRole(id string) (*AssignedRole, error)
-	AssignRole(authID string, roleID int) error
-	DeleteAssignedRole(authID string) error
+	GetAssignedRole(id int64) (*AssignedRole, error)
+	AssignRole(authID int64, roleID int) error
+	DeleteAssignedRole(authID int64) error
 }
 
 // Controller Describes role controller interface
