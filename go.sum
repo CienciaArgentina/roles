@@ -5,6 +5,7 @@ github.com/CienciaArgentina/go-email-sender v0.0.0-20200303023941-5019d948d2c1/g
 github.com/CienciaArgentina/go-email-sender v0.0.0-20200412073256-f7f1a1a6e55c/go.mod h1:gSQP8nSaT7B/pSxeQWozcjYm49KHlreZ1gaWgCeuuKU=
 github.com/CienciaArgentina/go-enigma v0.0.0-20200330021150-49a56be20f2a/go.mod h1:2IWPKW0EXXARcn85b0DEeQ2S4Mu5IlIkM/puqyx5ef8=
 github.com/CienciaArgentina/go-enigma v0.0.0-20200615035503-d3ed4eea947e/go.mod h1:l0pzlBThWaC4uySH8MdaLvT6Ed8HcvLZdU0jfL1FQgo=
+github.com/DATA-DOG/go-sqlmock v1.5.0 h1:Shsta01QNfFxHCfpW6YH2STWB0MudeXXEWMr20OEh60=
 github.com/DATA-DOG/go-sqlmock v1.5.0/go.mod h1:f/Ixk793poVmq4qj/V1dPUg2JEAKC73Q5eFN3EC/SaM=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
