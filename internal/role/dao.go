@@ -95,7 +95,7 @@ func (d *DAOImpl) GetAll() ([]Role, error) {
 	if err != nil {
 		msg := "Error retrieving roles from DB"
 		logrus.Errorf("%s %s - %+v", daoLogKey, msg, err)
-		return nil, apierror.NewInternalServerApiError(msg, err, "role_all_query")
+		return nil, apierror.NewInternalServerApiError(msg, err, codeRoleAllQuery)
 	}
 	defer rows.Close()
 
@@ -219,7 +219,7 @@ func (d *DAOImpl) GetAssignedRole(id int64) (*AssignedRole, error) {
 // UpsertAssignedRole Inserts new element if record doesn't exist, updates otherwise
 func (d *DAOImpl) UpsertAssignedRole(authID int64, roleID int) error {
 	statement := fmt.Sprintf(`
-	INSERT INTO assigned_roles (auth_id, role_id) VALUES ('%d', %d)
+	INSERT INTO assigned_roles (auth_id, role_id) VALUES (%d, %d)
 	`, authID, roleID)
 
 	_, err := d.db.Exec(statement)
