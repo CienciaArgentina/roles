@@ -270,6 +270,20 @@ func TestControllerImpl_GetAssignedRole(t *testing.T) {
 			wantErr:      true,
 		},
 		{
+			name: "wrong_auth_id",
+			fields: fields{
+				service: NewServiceMock(false),
+			},
+			expectedBody: nil,
+			params: []gin.Param{
+				{
+					Key:   "auth_id",
+					Value: "asd",
+				},
+			},
+			wantErr: true,
+		},
+		{
 			name: "error",
 			fields: fields{
 				service: NewServiceMock(true),
@@ -345,7 +359,17 @@ func TestControllerImpl_AssignRole(t *testing.T) {
 			fields: fields{
 				service: NewServiceMock(false),
 			},
-			requestBody:  `{"auth_id": ""}`,
+			requestBody:  `{"auth_id": 0}`,
+			expectedBody: nil,
+			params:       []gin.Param{},
+			wantErr:      true,
+		},
+		{
+			name: "service_err",
+			fields: fields{
+				service: NewServiceMock(true),
+			},
+			requestBody:  `{"auth_id": 623, "role_id": 1}`,
 			expectedBody: nil,
 			params:       []gin.Param{},
 			wantErr:      true,
@@ -449,6 +473,20 @@ func TestControllerImpl_DeleteAssignedRole(t *testing.T) {
 			expectedBody: nil,
 			params:       []gin.Param{},
 			wantErr:      true,
+		},
+		{
+			name: "type_error",
+			fields: fields{
+				service: NewServiceMock(true),
+			},
+			expectedBody: nil,
+			params: []gin.Param{
+				{
+					Key:   "auth_id",
+					Value: "asd",
+				},
+			},
+			wantErr: true,
 		},
 		{
 			name: "error",
